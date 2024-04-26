@@ -2,8 +2,8 @@ using PruebaTecnicaOnOff.Api.Auth;
 using PruebaTecnicaOnOff.Application.Servicios;
 using PruebaTecnicaOnOff.Application.Servicios.IServicios;
 using PruebaTecnicaOnOff.Infrastructure.Context;
-using PruebaTecnicaOnOff.Infrastructure.Repository;
-using PruebaTecnicaOnOff.Infrastructure.Repository.IRepository;
+using PruebaTecnicaOnOff.Infrastructure.Repositorio;
+using PruebaTecnicaOnOff.Infrastructure.Repositorio.IRepositorio;
 
 var builder = WebApplication.CreateBuilder(args);
 

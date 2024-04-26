@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PruebaTecnicaOnOff.Infrastructure.Repository.IRepository
+namespace PruebaTecnicaOnOff.Infrastructure.Repositorio.IRepositorio
 {
 	public interface IPremioSorteoRepository
 	{
 		void InsertarPremio(PremioSorteo premio);
-		bool ValidarNumeroAsignado(NumeroAsignado numeroAsignado);
+		Task<bool> ValidarNumeroAsignado(NumeroAsignado numeroAsignado);
 		void InsertarNumeroAsignado(NumeroAsignado numeroAsignado);
 	}
 }

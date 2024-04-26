@@ -10,6 +10,6 @@ namespace PruebaTecnicaOnOff.Application.Servicios.IServicios
 	public interface IPremioSorteoService
 	{
 		void InsertarPremio(PremioSorteo premio);
-		string InsertarNumeroAsignado(NumeroAsignado numeroAsignado);
+		Task<string> InsertarNumeroAsignado(NumeroAsignado numeroAsignado);
 	}
 }
