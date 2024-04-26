@@ -1,6 +1,7 @@
 ﻿using PruebaTecnicaOnOff.Application.Servicios.IServicios;
-using PruebaTecnicaOnOff.Core.Models;
-using PruebaTecnicaOnOff.Core.RepositoryInterface;
+using PruebaTecnicaOnOff.Core.Entities;
+using PruebaTecnicaOnOff.Infrastructure.Repository.IRepository;
+using System.Text.RegularExpressions;
 
 
 namespace PruebaTecnicaOnOff.Application.Servicios
@@ -8,7 +9,8 @@ namespace PruebaTecnicaOnOff.Application.Servicios
 	public class PremioSorteoService : IPremioSorteoService
 	{
         private readonly IPremioSorteoRepository _premioSorteoRepository;
-        public PremioSorteoService(IPremioSorteoRepository premioSorteoRepository)
+		const int LONGITUD_NUMERO = 5;
+		public PremioSorteoService(IPremioSorteoRepository premioSorteoRepository)
         {
             _premioSorteoRepository = premioSorteoRepository;
         }
@@ -18,36 +20,33 @@ namespace PruebaTecnicaOnOff.Application.Servicios
             _premioSorteoRepository.InsertarPremio(premio);
         }
 
-        public int InsertarNumeroAsignado(NumeroAsignado numeroAsignado) 
+        public string InsertarNumeroAsignado(NumeroAsignado numeroAsignado) 
         {
-            int numeroAsignar = GenerarNumeroAleatorio(numeroAsignado);
-            _premioSorteoRepository.InsertarNumeroAsignado(numeroAsignado, numeroAsignar);
-            return numeroAsignar;
-        }
+			string numeroAsignar = GenerarNumeroAleatorio(numeroAsignado);
+			numeroAsignado.Numero = numeroAsignar;
+			_premioSorteoRepository.InsertarNumeroAsignado(numeroAsignado);
+			return numeroAsignar;
+		}
 
-        private int GenerarNumeroAleatorio(NumeroAsignado numeroAsignado)
+        private string GenerarNumeroAleatorio(NumeroAsignado numeroAsignado)
         {
-            int numero;
-            Random random = new();
-            do
-            {
-                numero = random.Next(10000, 100000);
-            } while (MasDeTresNumerosIguales(numero.ToString()) && _premioSorteoRepository.ValidarNumeroAsignado(numeroAsignado, numero));
-            
-            return numero;
+			string numero;
+			Random random = new();
+			do
+			{
+				numero = random.Next(1, 100000).ToString().PadLeft(LONGITUD_NUMERO, '0');
+				numeroAsignado.Numero = numero;
+			} while (MasDeTresNumerosIguales(numero.ToString()) && _premioSorteoRepository.ValidarNumeroAsignado(numeroAsignado));
+
+			return numero;
 		}
 
 
         private static bool MasDeTresNumerosIguales(string numero)
         {
-			for (int i = 0; i < numero.Length - 2; i++)
-			{
-				if (numero[i] == numero[i + 1] && numero[i + 1] == numero[i + 2])
-				{
-					return true;
-				}
-			}
-			return false;
+			string patron = @"(\d)\1{2}";
+			Match coincidencia = Regex.Match(numero, patron);
+			return coincidencia.Success;
 		}
 	}
 }
