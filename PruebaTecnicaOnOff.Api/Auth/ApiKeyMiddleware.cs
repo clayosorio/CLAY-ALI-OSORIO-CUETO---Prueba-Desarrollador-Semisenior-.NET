@@ -17,7 +17,7 @@ namespace PruebaTecnicaOnOff.Api.Auth
 
 		public ApiKeyMiddleware(IConfiguration configuration, RequestDelegate next)
 		{
-			_apiKeyValue = configuration.GetConnectionString("apiKeyValue");
+			_apiKeyValue = configuration.GetSection("ApiKey:apiKeyValue").Value ?? throw new NullReferenceException("Configurar ApiKey en settings.");
 			_next = next;
 		}
 

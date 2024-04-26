@@ -15,16 +15,16 @@ namespace PruebaTecnicaOnOff.Api.Controlador
         }
 
         [HttpPost]
-		public async Task<IActionResult> InsertarPremio(PremioSorteo premio)
+		public ActionResult InsertarPremio(PremioSorteo premio)
 		{ 
 			_premioSorteoService.InsertarPremio(premio);
 			return Ok();
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> InsertarNumeroAsignado(NumeroAsignado numeroAsignado)
+		public async Task<ActionResult<string>> InsertarNumeroAsignado(NumeroAsignado numeroAsignado)
 		{
-			string result = _premioSorteoService.InsertarNumeroAsignado(numeroAsignado);
+			string result = await _premioSorteoService.InsertarNumeroAsignado(numeroAsignado);
 			return Ok(result);
 		}
 	}

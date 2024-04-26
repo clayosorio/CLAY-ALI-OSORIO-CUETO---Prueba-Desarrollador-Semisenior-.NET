@@ -1,22 +1,21 @@
 CREATE DATABASE PruebaTecnicaOnOff;
 GO
 
--- Utilizar la base de datos recién creada
 USE PruebaTecnicaOnOff;
 GO
 
 -- Crear la tabla PremioSorteo
 CREATE TABLE PremioSorteo (
     Id UNIQUEIDENTIFIER PRIMARY KEY,
-    Name NVARCHAR(255) NOT NULL,
-    Description NVARCHAR(MAX),
-    Amount INT
+    Nombre NVARCHAR(255) NOT NULL,
+    Descripcion NVARCHAR(MAX),
+    Valor INT
 );
 
-
+-- Crear la tabla NumeroAsignado
 CREATE TABLE NumeroAsignado (
     Id UNIQUEIDENTIFIER PRIMARY KEY,
-    Client NVARCHAR(255) NOT NULL,
-    UserClient NVARCHAR(255) NOT NULL,
-    Number INT NOT NULL
+    Cliente NVARCHAR(255) NOT NULL,
+    Usuario NVARCHAR(255) NOT NULL,
+    Numero INT NOT NULL
 );
