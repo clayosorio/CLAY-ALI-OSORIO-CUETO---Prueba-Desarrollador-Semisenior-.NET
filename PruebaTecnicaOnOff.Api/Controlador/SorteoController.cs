@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PruebaTecnicaOnOff.Application.Servicios.IServicios;
-using PruebaTecnicaOnOff.Core.Models;
+using PruebaTecnicaOnOff.Core.Entities;
 
 namespace PruebaTecnicaOnOff.Api.Controlador
 {
@@ -24,7 +24,7 @@ namespace PruebaTecnicaOnOff.Api.Controlador
 		[HttpPost]
 		public async Task<IActionResult> InsertarNumeroAsignado(NumeroAsignado numeroAsignado)
 		{
-			int result = _premioSorteoService.InsertarNumeroAsignado(numeroAsignado);
+			string result = _premioSorteoService.InsertarNumeroAsignado(numeroAsignado);
 			return Ok(result);
 		}
 	}

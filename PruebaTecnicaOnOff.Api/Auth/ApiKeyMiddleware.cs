@@ -7,17 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace PruebaTecnicaOnOff.Infrastructure.Middleware
+namespace PruebaTecnicaOnOff.Api.Auth
 {
 	public class ApiKeyMiddleware
 	{
 		private readonly RequestDelegate _next;
-		private readonly IConfiguration _configuration;
 		private const string ApiKeyName = "ApiKey";
 		private readonly string _apiKeyValue;
 
 		public ApiKeyMiddleware(IConfiguration configuration, RequestDelegate next)
-        {
+		{
 			_apiKeyValue = configuration.GetConnectionString("apiKeyValue");
 			_next = next;
 		}
@@ -33,5 +32,5 @@ namespace PruebaTecnicaOnOff.Infrastructure.Middleware
 			}
 			await _next(context);
 		}
-    }
+	}
 }

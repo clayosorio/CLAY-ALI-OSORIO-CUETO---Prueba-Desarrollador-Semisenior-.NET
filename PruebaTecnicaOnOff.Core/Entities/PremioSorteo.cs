@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace PruebaTecnicaOnOff.Core.Models
+namespace PruebaTecnicaOnOff.Core.Entities
 {
 	public class PremioSorteo
 	{

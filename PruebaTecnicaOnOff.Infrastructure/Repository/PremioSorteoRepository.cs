@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using PruebaTecnicaOnOff.Core.Models;
-using PruebaTecnicaOnOff.Core.RepositoryInterface;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using PruebaTecnicaOnOff.Core.Entities;
+using PruebaTecnicaOnOff.Infrastructure.Context;
+using PruebaTecnicaOnOff.Infrastructure.Repository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,9 +15,11 @@ namespace PruebaTecnicaOnOff.Infrastructure.Repository
 	public class PremioSorteoRepository : IPremioSorteoRepository
 	{
 		private readonly string _connectionString;
-        public PremioSorteoRepository(IConfiguration configuration)
+		private readonly PruebaTecnicaOnOffContext _context;
+        public PremioSorteoRepository(IConfiguration configuration, PruebaTecnicaOnOffContext context)
         {
-			_connectionString = configuration.GetConnectionString("connectionString");
+			_connectionString = configuration.GetConnectionString("adoConnectionString");
+			_context = context;
 		}
         public void InsertarPremio(PremioSorteo premio) 
 		{
@@ -32,32 +36,15 @@ namespace PruebaTecnicaOnOff.Infrastructure.Repository
 			sqlCommand.ExecuteNonQuery();
 		}
 
-		public bool ValidarNumeroAsignado(NumeroAsignado numeroAsignado, int numero)
+		public bool ValidarNumeroAsignado(NumeroAsignado numeroAsignado)
 		{
-			using SqlConnection connection = new SqlConnection(_connectionString);
-			connection.Open();
-			string query = "SELECT COUNT(*) FROM NumeroAsignado WHERE Client = @Cliente AND UserClient = @Usuario AND Numero = @Numero";
-			using SqlCommand command = new SqlCommand(query, connection);
-			command.Parameters.AddWithValue("@Client", numeroAsignado.Cliente);
-			command.Parameters.AddWithValue("@Usuario", numeroAsignado.Usuario);
-			command.Parameters.AddWithValue("@Numero", numero);
-			int count = (int)command.ExecuteScalar();
-			return count > 0;
+			return _context.NumeroAsignado.Any(p => p.Cliente == numeroAsignado.Cliente && p.Usuario == numeroAsignado.Usuario && p.Numero == numeroAsignado.Numero);
 		}
 
-		public void InsertarNumeroAsignado(NumeroAsignado numeroAsignado, int numero)
-		{ 
-			numeroAsignado.Id = Guid.NewGuid();
-			using var connection = new SqlConnection(_connectionString);
-			string query = "INSERT INTO NumeroAsignado (Id, Client, UserClient, Number) VALUES (@Id, @Cliente, @Usuario, @Numero)";
-			SqlCommand command = new SqlCommand(query, connection);
-			command.Parameters.AddWithValue("@Id", numeroAsignado.Id);
-			command.Parameters.AddWithValue("@Cliente", numeroAsignado.Cliente);
-			command.Parameters.AddWithValue("@Usuario", numeroAsignado.Usuario);
-			command.Parameters.AddWithValue("@Numero", numero);
-
-			connection.Open();
-			command.ExecuteNonQuery();
+		public void InsertarNumeroAsignado(NumeroAsignado numeroAsignado)
+		{
+			_context.Add(numeroAsignado);
+			_context.SaveChanges();
 		}
 
 	}

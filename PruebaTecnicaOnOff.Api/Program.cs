@@ -1,8 +1,9 @@
+using PruebaTecnicaOnOff.Api.Auth;
 using PruebaTecnicaOnOff.Application.Servicios;
 using PruebaTecnicaOnOff.Application.Servicios.IServicios;
-using PruebaTecnicaOnOff.Core.RepositoryInterface;
-using PruebaTecnicaOnOff.Infrastructure.Middleware;
+using PruebaTecnicaOnOff.Infrastructure.Context;
 using PruebaTecnicaOnOff.Infrastructure.Repository;
+using PruebaTecnicaOnOff.Infrastructure.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+builder.Services.AddSqlServer<PruebaTecnicaOnOffContext>(builder.Configuration.GetConnectionString("connectionStringEF"));
 builder.Services.AddScoped<IPremioSorteoRepository, PremioSorteoRepository>();
 builder.Services.AddScoped<IPremioSorteoService, PremioSorteoService>();
 
