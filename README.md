@@ -51,4 +51,6 @@ Para ejecutar el proyecto, sigue estos pasos:
 Clona este repositorio en tu máquina local.
 Abre el proyecto en Visual Studio.
 Asegúrate de tener instalado el SDK de .NET 8.
+Ejecuta el archivo sql "QUERY PRUEBA TECNICA ONOFF" en un motor de base de datos sql server.
 Ejecuta la aplicación y accede a través de tu navegador o herramienta de prueba de API favorita.
+
